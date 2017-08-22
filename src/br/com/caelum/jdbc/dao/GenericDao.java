@@ -10,21 +10,16 @@ import br.com.caelum.exception.DaoException;
 public class GenericDao implements IGenericDao<Object> {
 
 	private Connection connection = null;
-	private Class<?> classe = null;
 	
 	public GenericDao(Connection connection)
 	{
 		this.connection = connection;
 	}
 
-	public void setClasse(Class<?> classe) {
-		this.classe = classe;
-	}
-
 	@Override
 	public Object save(Object entity) {
-
-		PreparedStatement stmt = getInsertPreparedStatement(this.connection,classe,entity);
+		
+		PreparedStatement stmt = getInsertPreparedStatement(this.connection,entity);
 
 		try 
 		{
@@ -32,7 +27,7 @@ public class GenericDao implements IGenericDao<Object> {
 		} 
 		catch (SQLException e) 
 		{
-			throw new DaoException("Erro ao salvar elemento - "+classe.getName(),e);
+			throw new DaoException("Erro ao salvar elemento - "+entity.getClass().getSimpleName(),e);
 		}
 
 		try 
@@ -41,7 +36,7 @@ public class GenericDao implements IGenericDao<Object> {
 		} 
 		catch (SQLException e) 
 		{
-			throw new DaoException("Erro ao fechar conexão com o banco - "+classe.getName(),e);
+			throw new DaoException("Erro ao fechar conexão com o banco - "+entity.getClass().getName(),e);
 		}
 
 		return null;

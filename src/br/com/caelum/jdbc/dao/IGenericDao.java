@@ -23,11 +23,11 @@ public interface IGenericDao<T> {
 	public T getById(Long id);
 	public void delete(Long id);	
 
-	public default Map<String, String> getFieldMap(Class<?> classe) {
+	public default Map<String, String> getFieldMap(Object entity) {
 		
 		Map<String, String> fields = new HashMap<String,String>();
 		
-		for(Method metodo : classe.getMethods())
+		for(Method metodo : entity.getClass().getMethods())
 		{
 			if(metodo.getName().contains("get") || metodo.getName().contains("is"))
 			{
@@ -47,9 +47,9 @@ public interface IGenericDao<T> {
 		return fields;
 	}
 	
-	public default List<Field> getFieldsNotNull(Class<?> classe, Object entity){
+	public default List<Field> getFieldsNotNull(Object entity){
 		
-		List<Field> fieldList = Arrays.asList(classe.getDeclaredFields());
+		List<Field> fieldList = Arrays.asList(entity.getClass().getDeclaredFields());
 		
 		List<Field> fieldsNotNull = new ArrayList<Field>();
 		
@@ -61,7 +61,7 @@ public interface IGenericDao<T> {
 			try {
 				value = field.get(entity);
 			} catch (IllegalArgumentException | IllegalAccessException e) {
-				throw new DaoException("Erro ao recuperar valor de campo na inserção - "+classe.getName(),e);
+				throw new DaoException("Erro ao recuperar valor de campo na inserção - "+entity.getClass().getSimpleName(),e);
 			}
 			
 			if(value!=null)
@@ -73,14 +73,14 @@ public interface IGenericDao<T> {
 		return fieldsNotNull;
 	}
 	
-	public default String generateSql(Class<?> classe, Object entity) {
+	public default String generateSql(Object entity) {
 		
-		String sql = "insert into ".concat(classe.getSimpleName().toLowerCase()).concat(" (");
+		String sql = "insert into ".concat(entity.getClass().getSimpleName().toLowerCase()).concat(" (");
 
 		String fields = "";
 		String values = "";
 		
-		for(Field field : getFieldsNotNull(classe,entity))
+		for(Field field : getFieldsNotNull(entity))
 		{			
 			String fieldName = field.getName();			
 			fieldName = String.valueOf(fieldName.charAt(0)).toLowerCase().concat(fieldName.substring(1, fieldName.length()));
@@ -104,19 +104,19 @@ public interface IGenericDao<T> {
 		return sql;
 	}
 	
-	public default PreparedStatement getInsertPreparedStatement(Connection connection, Class<?> classe, Object entity)
+	public default PreparedStatement getInsertPreparedStatement(Connection connection, Object entity)
 	{
 		
-		Map<String,String> lista = getFieldMap(classe);
+		Map<String,String> lista = getFieldMap(entity);
 		
-		List<Field> fieldsNotNull = getFieldsNotNull(classe,entity);
+		List<Field> fieldsNotNull = getFieldsNotNull(entity);
 		
 		PreparedStatement stmt = null;
 		
 		try {
-			stmt = connection.prepareStatement(generateSql(classe,entity));
+			stmt = connection.prepareStatement(generateSql(entity));
 		} catch (SQLException e) {
-			throw new DaoException("Erro na geração do SQL na inserção - "+classe.getName(),e);
+			throw new DaoException("Erro na geração do SQL na inserção - "+entity.getClass().getName(),e);
 		}
 
 		int contador = 1;
@@ -129,7 +129,7 @@ public interface IGenericDao<T> {
 			try {
 				value = field.get(entity);
 			} catch (IllegalArgumentException | IllegalAccessException e) {
-				throw new DaoException("Erro ao recuperar valor de campo na inserção - "+classe.getName(),e);
+				throw new DaoException("Erro ao recuperar valor de campo na inserção - "+entity.getClass().getName(),e);
 			}
 
 			if(!field.getName().equalsIgnoreCase("id"))
@@ -146,7 +146,7 @@ public interface IGenericDao<T> {
 					} 
 					catch (NumberFormatException | SQLException e) 
 					{
-						throw new DaoException("Erro na definição de valores na inserção - "+classe.getName(),e);
+						throw new DaoException("Erro na definição de valores na inserção - "+entity.getClass().getName(),e);
 					}
 					contador++;
 					break;
@@ -160,7 +160,7 @@ public interface IGenericDao<T> {
 					} 
 					catch (NumberFormatException | SQLException e) 
 					{
-						throw new DaoException("Erro na definição de valores na inserção - "+classe.getName(),e);
+						throw new DaoException("Erro na definição de valores na inserção - "+entity.getClass().getName(),e);
 					}
 					contador++;
 					break;
@@ -174,7 +174,7 @@ public interface IGenericDao<T> {
 					}
 					catch (NumberFormatException | SQLException e) 
 					{
-						throw new DaoException("Erro na definição de valores na inserção - "+classe.getName(),e);
+						throw new DaoException("Erro na definição de valores na inserção - "+entity.getClass().getName(),e);
 					}
 					contador++;
 					break;
@@ -188,7 +188,7 @@ public interface IGenericDao<T> {
 					}
 					catch (NumberFormatException | SQLException e) 
 					{
-						throw new DaoException("Erro na definição de valores na inserção - "+classe.getName(),e);
+						throw new DaoException("Erro na definição de valores na inserção - "+entity.getClass().getName(),e);
 					}
 					contador++;
 					break;
@@ -202,7 +202,7 @@ public interface IGenericDao<T> {
 					} 
 					catch (NumberFormatException | SQLException e) 
 					{
-						throw new DaoException("Erro na definição de valores na inserção - "+classe.getName(),e);
+						throw new DaoException("Erro na definição de valores na inserção - "+entity.getClass().getName(),e);
 					}
 					contador++;
 					break;
@@ -215,7 +215,7 @@ public interface IGenericDao<T> {
 					} 
 					catch (NumberFormatException | SQLException e) 
 					{
-						throw new DaoException("Erro na definição de valores na inserção - "+classe.getName(),e);
+						throw new DaoException("Erro na definição de valores na inserção - "+entity.getClass().getName(),e);
 					}
 					contador++;
 					break;
@@ -228,7 +228,7 @@ public interface IGenericDao<T> {
 					} 
 					catch (NumberFormatException | SQLException e) 
 					{
-						throw new DaoException("Erro na definição de valores na inserção - "+classe.getName(),e);
+						throw new DaoException("Erro na definição de valores na inserção - "+entity.getClass().getName(),e);
 					}
 					contador++;
 					break;
@@ -241,7 +241,7 @@ public interface IGenericDao<T> {
 					} 
 					catch (NumberFormatException | SQLException e) 
 					{
-						throw new DaoException("Erro na definição de valores na inserção - "+classe.getName(),e);
+						throw new DaoException("Erro na definição de valores na inserção - "+entity.getClass().getName(),e);
 					}
 					contador++;
 					break;
