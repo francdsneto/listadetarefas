@@ -4,6 +4,7 @@ import br.com.caelum.exception.DaoException;
 import br.com.caelum.exception.JdbcConnectionException;
 import br.com.caelum.jdbc.ConnectionFactory;
 import br.com.caelum.jdbc.dao.GenericDao;
+import br.com.caelum.jdbc.dao.IGenericDao;
 import br.com.caelum.tarefas.modelo.Contato;
 import br.com.caelum.tarefas.modelo.Tarefa;
 
@@ -12,7 +13,7 @@ public class Teste {
 	public static void main(String[] args) throws JdbcConnectionException, DaoException {
 
 
-		GenericDao dao = new GenericDao(ConnectionFactory.getInstance());
+		IGenericDao<Tarefa> dao = new GenericDao<Tarefa>(ConnectionFactory.getInstance());
 		
 		Tarefa tarefa = new Tarefa();
 
@@ -23,6 +24,8 @@ public class Teste {
 		
 		dao.save(tarefa);
 		
+		IGenericDao<Contato> daoC = new GenericDao<Contato>(ConnectionFactory.getInstance());
+		
 		Contato contato = new Contato();
 		
 		contato.setNome("Francisco Neto");
@@ -30,7 +33,7 @@ public class Teste {
 		contato.setEmail("teste@teste.com");
 		contato.setDataNascimento(Calendar.getInstance());
 		
-		dao.save(contato);
+		daoC.save(contato);
 		
 	}
 

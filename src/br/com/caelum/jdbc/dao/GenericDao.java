@@ -7,7 +7,7 @@ import java.util.List;
 
 import br.com.caelum.exception.DaoException;
 
-public class GenericDao implements IGenericDao<Object> {
+public class GenericDao<T> implements IGenericDao<T> {
 
 	private Connection connection = null;
 	
@@ -17,7 +17,7 @@ public class GenericDao implements IGenericDao<Object> {
 	}
 
 	@Override
-	public Object save(Object entity) throws DaoException {
+	public T save(T entity) throws DaoException {
 		
 		PreparedStatement stmt = getInsertPreparedStatement(this.connection,entity);
 
@@ -43,19 +43,19 @@ public class GenericDao implements IGenericDao<Object> {
 	}
 
 	@Override
-	public Object update(Object entity) throws DaoException {
+	public T update(T entity) throws DaoException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Object> getAll() throws DaoException {
+	public List<T> getAll() throws DaoException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Object getById(Long id) throws DaoException {
+	public T getById(Long id) throws DaoException {
 		// TODO Auto-generated method stub
 		return null;
 	}

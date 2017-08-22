@@ -8,7 +8,7 @@ import br.com.caelum.exception.JdbcConnectionException;
 
 public final class ConnectionFactory {
 	
-	private static final String URL = "jdbc:mysql://localhost/fj22";
+	private static final String URL = "jdbc:mysql://localhost/fj21";
 	private static final String USER = "root";
 	private static final String PASSWORD =  "lol12345";
 	private static final String DRIVER_CLASS = "com.mysql.jdbc.Driver";

@@ -23,7 +23,7 @@ public interface IGenericDao<T> {
 	public T getById(Long id) throws DaoException;
 	public void delete(Long id) throws DaoException;	
 
-	public default Map<String, String> getFieldMap(Object entity) {
+	public default Map<String, String> getFieldMap(T entity) {
 		
 		Map<String, String> fields = new HashMap<String,String>();
 		
@@ -47,7 +47,7 @@ public interface IGenericDao<T> {
 		return fields;
 	}
 	
-	public default List<Field> getFieldsNotNull(Object entity) throws DaoException 
+	public default List<Field> getFieldsNotNull(T entity) throws DaoException 
 	{
 		
 		List<Field> fieldList = Arrays.asList(entity.getClass().getDeclaredFields());
@@ -74,7 +74,7 @@ public interface IGenericDao<T> {
 		return fieldsNotNull;
 	}
 	
-	public default String generateSql(Object entity) throws DaoException {
+	public default String generateSql(T entity) throws DaoException {
 		
 		String sql = "insert into ".concat(entity.getClass().getSimpleName().toLowerCase()).concat(" (");
 
@@ -105,7 +105,7 @@ public interface IGenericDao<T> {
 		return sql;
 	}
 	
-	public default PreparedStatement getInsertPreparedStatement(Connection connection, Object entity) throws DaoException
+	public default PreparedStatement getInsertPreparedStatement(Connection connection, T entity) throws DaoException
 	{
 		
 		Map<String,String> lista = getFieldMap(entity);
