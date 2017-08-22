@@ -17,7 +17,7 @@ public class GenericDao implements IGenericDao<Object> {
 	}
 
 	@Override
-	public Object save(Object entity) {
+	public Object save(Object entity) throws DaoException {
 		
 		PreparedStatement stmt = getInsertPreparedStatement(this.connection,entity);
 
@@ -43,25 +43,25 @@ public class GenericDao implements IGenericDao<Object> {
 	}
 
 	@Override
-	public Object update(Object entity) {
+	public Object update(Object entity) throws DaoException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Object> getAll() {
+	public List<Object> getAll() throws DaoException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Object getById(Long id) {
+	public Object getById(Long id) throws DaoException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void delete(Long id) {
+	public void delete(Long id) throws DaoException {
 		// TODO Auto-generated method stub
 
 	}

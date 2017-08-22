@@ -1,5 +1,7 @@
 import java.util.Calendar;
 
+import br.com.caelum.exception.DaoException;
+import br.com.caelum.exception.JdbcConnectionException;
 import br.com.caelum.jdbc.ConnectionFactory;
 import br.com.caelum.jdbc.dao.GenericDao;
 import br.com.caelum.tarefas.modelo.Contato;
@@ -7,7 +9,7 @@ import br.com.caelum.tarefas.modelo.Tarefa;
 
 public class Teste {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws JdbcConnectionException, DaoException {
 
 
 		GenericDao dao = new GenericDao(ConnectionFactory.getInstance());

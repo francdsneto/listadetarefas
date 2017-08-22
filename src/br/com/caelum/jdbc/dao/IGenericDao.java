@@ -17,11 +17,11 @@ import br.com.caelum.exception.DaoException;
 
 public interface IGenericDao<T> {
 	
-	public T save(T entity);
-	public T update(T entity);
-	public List<T> getAll();
-	public T getById(Long id);
-	public void delete(Long id);	
+	public T save(T entity) throws DaoException;
+	public T update(T entity) throws DaoException;
+	public List<T> getAll() throws DaoException;
+	public T getById(Long id) throws DaoException;
+	public void delete(Long id) throws DaoException;	
 
 	public default Map<String, String> getFieldMap(Object entity) {
 		
@@ -47,7 +47,8 @@ public interface IGenericDao<T> {
 		return fields;
 	}
 	
-	public default List<Field> getFieldsNotNull(Object entity){
+	public default List<Field> getFieldsNotNull(Object entity) throws DaoException 
+	{
 		
 		List<Field> fieldList = Arrays.asList(entity.getClass().getDeclaredFields());
 		
@@ -73,7 +74,7 @@ public interface IGenericDao<T> {
 		return fieldsNotNull;
 	}
 	
-	public default String generateSql(Object entity) {
+	public default String generateSql(Object entity) throws DaoException {
 		
 		String sql = "insert into ".concat(entity.getClass().getSimpleName().toLowerCase()).concat(" (");
 
@@ -104,7 +105,7 @@ public interface IGenericDao<T> {
 		return sql;
 	}
 	
-	public default PreparedStatement getInsertPreparedStatement(Connection connection, Object entity)
+	public default PreparedStatement getInsertPreparedStatement(Connection connection, Object entity) throws DaoException
 	{
 		
 		Map<String,String> lista = getFieldMap(entity);

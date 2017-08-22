@@ -1,6 +1,6 @@
 package br.com.caelum.exception;
 
-public class JdbcConnectionException extends RuntimeException {
+public class JdbcConnectionException extends Exception {
 
 	/**
 	 * 

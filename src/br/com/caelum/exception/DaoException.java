@@ -1,6 +1,6 @@
 package br.com.caelum.exception;
 
-public class DaoException extends RuntimeException {
+public class DaoException extends Exception {
 
 	/**
 	 * 
