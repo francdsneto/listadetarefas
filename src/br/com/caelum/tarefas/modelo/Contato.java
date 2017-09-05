@@ -2,9 +2,12 @@ package br.com.caelum.tarefas.modelo;
 
 import java.util.Calendar;
 
+import javax.validation.constraints.NotNull;
+
 public class Contato {
 
 	private Long id;
+	@NotNull(message="Nome deve ser preenchido.")
 	private String nome;
 	private String email;
 	private String endereco;

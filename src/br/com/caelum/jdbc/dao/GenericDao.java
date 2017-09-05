@@ -11,7 +11,7 @@ public class GenericDao<T> implements IGenericDao<T> {
 
 	private Connection connection = null;
 	
-	public GenericDao(Connection connection)
+	public void setConnection(Connection connection)
 	{
 		this.connection = connection;
 	}
@@ -50,7 +50,9 @@ public class GenericDao<T> implements IGenericDao<T> {
 
 	@Override
 	public List<T> getAll() throws DaoException {
-		// TODO Auto-generated method stub
+		
+//		PreparedStatement stmt = this.getGetAllPreparedStatement(connection);
+		
 		return null;
 	}
 

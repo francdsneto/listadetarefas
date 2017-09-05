@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,13 +17,18 @@ import java.util.Map;
 import br.com.caelum.exception.DaoException;
 
 public interface IGenericDao<T> {
-	
+
 	public T save(T entity) throws DaoException;
 	public T update(T entity) throws DaoException;
 	public List<T> getAll() throws DaoException;
 	public T getById(Long id) throws DaoException;
 	public void delete(Long id) throws DaoException;	
 
+	/**
+	 * Retorna todos os campos da classe do objeto passado por parametro em um mapa de nome e seu tipo
+	 * @param entity
+	 * @return
+	 */
 	public default Map<String, String> getFieldMap(T entity) {
 		
 		Map<String, String> fields = new HashMap<String,String>();
@@ -47,6 +53,12 @@ public interface IGenericDao<T> {
 		return fields;
 	}
 	
+	/**
+	 * Retorna a lista de fields do objeto passado por parametro que possuem valores
+	 * @param entity
+	 * @return
+	 * @throws DaoException
+	 */
 	public default List<Field> getFieldsNotNull(T entity) throws DaoException 
 	{
 		
@@ -74,7 +86,11 @@ public interface IGenericDao<T> {
 		return fieldsNotNull;
 	}
 	
-	public default String generateSql(T entity) throws DaoException {
+//	public default String generateGetAllSql() throws DaoException {
+//		return "select * from ".concat(classe.getSimpleName().toLowerCase());
+//	}
+	
+	public default String generateInsertSql(T entity) throws DaoException {
 		
 		String sql = "insert into ".concat(entity.getClass().getSimpleName().toLowerCase()).concat(" (");
 
@@ -105,6 +121,21 @@ public interface IGenericDao<T> {
 		return sql;
 	}
 	
+//	public default PreparedStatement getGetAllPreparedStatement(Connection connection) throws DaoException
+//	{
+//		PreparedStatement stmt = null;
+//		
+//		Class<T> classe = null;
+//		
+//		try {
+//			stmt = connection.prepareStatement(generateGetAllSql());
+//		} catch (SQLException e) {
+//			throw new DaoException("Erro na geração do SQL de listagem - "+classe.getName(),e);
+//		}
+//		
+//		return stmt;
+//	}
+	
 	public default PreparedStatement getInsertPreparedStatement(Connection connection, T entity) throws DaoException
 	{
 		
@@ -115,7 +146,7 @@ public interface IGenericDao<T> {
 		PreparedStatement stmt = null;
 		
 		try {
-			stmt = connection.prepareStatement(generateSql(entity));
+			stmt = connection.prepareStatement(generateInsertSql(entity));
 		} catch (SQLException e) {
 			throw new DaoException("Erro na geração do SQL na inserção - "+entity.getClass().getName(),e);
 		}
